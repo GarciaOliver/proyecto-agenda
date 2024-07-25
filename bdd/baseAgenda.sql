@@ -5,10 +5,6 @@
 
 drop table if exists ASIGNACIONES;
 
-drop table if exists SERVICIOS;
-
-drop table if exists SOLICITUDES;
-
 drop table if exists SOPORTES;
 
 drop table if exists TECNICOSCAMPO;
@@ -18,6 +14,10 @@ drop table if exists CLIENTES;
 drop table if exists PERSONAS;
 
 drop table if exists TIPODANOS;
+
+drop table if exists SERVICIOS;
+
+drop table if exists SOLICITUDES;
 
 /*==============================================================*/
 /* Table: ASIGNACIONES                                          */
@@ -93,6 +93,7 @@ CREATE TABLE SOLICITUDES
    HORARIOATENCION      VARCHAR(50)                    NOT NULL,
    FECHAEMISION         DATE                           NOT NULL,
    ESTADO               SMALLINT                       NOT NULL,
+   DETALLE				TEXT							NOT NULL,
    CONSTRAINT PK_SOLICITUDES PRIMARY KEY (IDSOLICITUD)
 );
 
@@ -236,3 +237,21 @@ END IF;
 
 END //
 DELIMITER ;
+
+-- ---------------------------------------------------------------------------------------------------------------
+
+DELIMITER //
+CREATE PROCEDURE sp_login(
+   IN p_correo VARCHAR(100),
+   IN p_contrasenia VARCHAR(150)
+)
+BEGIN
+   -- Selecciona el rol, hash de la contraseña y el estado de activación
+   SELECT OCUPACION AS rol, CONTRASENIA AS hash_contrasenia, activado
+   FROM personas
+   WHERE CORREO = p_correo AND CONTRASENIA = p_contrasenia;
+
+END //
+DELIMITER ;
+
+-- ---------------------------------------------------------------------------------------------------------------
