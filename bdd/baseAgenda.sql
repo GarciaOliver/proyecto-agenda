@@ -5,10 +5,6 @@
 
 drop table if exists ASIGNACIONES;
 
-drop table if exists CLIENTES;
-
-drop table if exists PERSONAS;
-
 drop table if exists SERVICIOS;
 
 drop table if exists SOLICITUDES;
@@ -17,111 +13,119 @@ drop table if exists SOPORTES;
 
 drop table if exists TECNICOSCAMPO;
 
+drop table if exists CLIENTES;
+
+drop table if exists PERSONAS;
+
 drop table if exists TIPODANOS;
 
 /*==============================================================*/
 /* Table: ASIGNACIONES                                          */
 /*==============================================================*/
-create table ASIGNACIONES 
+CREATE TABLE ASIGNACIONES 
 (
-   IDTAREA              integer                        not null,
-   IDSOLICITUD          int                            not null,
-   IDTECNICOCAMPO       int                            not null,
-   IDSOPORTE            int                            not null,
-   RELEVANCIA           varchar(50)                    not null,
-   FECHAEMISION         date                           not null,
-   FECHAFIN             datetime                       null,
-   FECHAELABORACION     date                           not null,
-   ESTADO               int                            not null,
-   OBSERVACION          text                           not null,
-   constraint PK_ASIGNACIONES primary key clustered (IDTAREA)
+   IDTAREA              INT                            NOT NULL AUTO_INCREMENT,
+   IDSOLICITUD          INT                            NOT NULL,
+   IDTECNICOCAMPO       INT                            NOT NULL,
+   IDSOPORTE            INT                            NOT NULL,
+   RELEVANCIA           VARCHAR(50)                    NOT NULL,
+   FECHAEMISION         DATE                           NOT NULL,
+   FECHAFIN             DATETIME                       NULL,
+   FECHAELABORACION     DATE                           NOT NULL,
+   ESTADO               INT                            NOT NULL,
+   OBSERVACION          TEXT                           NOT NULL,
+   CONSTRAINT PK_ASIGNACIONES PRIMARY KEY (IDTAREA)
 );
 
 /*==============================================================*/
 /* Table: CLIENTES                                              */
 /*==============================================================*/
-create table CLIENTES 
+CREATE TABLE CLIENTES 
 (
-   CEDULA               varchar(10)                    not null,
-   IDCLIENTE            integer                        not null,
-   constraint PK_CLIENTES primary key clustered (IDCLIENTE)
+   CEDULA               VARCHAR(10)                    NOT NULL,
+   IDCLIENTE            INT                            NOT NULL AUTO_INCREMENT,
+   CONSTRAINT PK_CLIENTES PRIMARY KEY (IDCLIENTE)
 );
 
 /*==============================================================*/
 /* Table: PERSONAS                                              */
 /*==============================================================*/
-create table PERSONAS 
+CREATE TABLE PERSONAS 
 (
-   CEDULA               varchar(10)                    not null,
-   NOMBRE               varchar(50)                    not null,
-   APELLIDO             varchar(50)                    not null,
-   NROTELEFONO          varchar(10)                    not null,
-   CONTRASENIA          varchar(150)                   not null,
-   OCUPACION            varchar(50)                    not null,
-   CORREO               varchar(100)                   not null,
-   ESTADO				varchar(25)						not null,
-   constraint PK_PERSONAS primary key clustered (CEDULA)
+   CEDULA               VARCHAR(10)                    NOT NULL,
+   NOMBRE               VARCHAR(50)                    NOT NULL,
+   APELLIDO             VARCHAR(50)                    NOT NULL,
+   NROTELEFONO          VARCHAR(10)                    NOT NULL,
+   CONTRASENIA          VARCHAR(150)                   NOT NULL,
+   OCUPACION            VARCHAR(50)                    NOT NULL,
+   CORREO               VARCHAR(100)                   NOT NULL,
+   ESTADO               VARCHAR(25)                    NOT NULL,
+   hash_                VARCHAR(45)                    DEFAULT NULL,
+   ACTIVADO             TINYINT(1)                     DEFAULT 0,
+   CONSTRAINT CHK_OCUPACION CHECK (OCUPACION IN ('cliente','soporte','empleado')),
+   CONSTRAINT PK_PERSONAS PRIMARY KEY (CEDULA)
 );
 
 /*==============================================================*/
 /* Table: SERVICIOS                                             */
 /*==============================================================*/
-create table SERVICIOS 
+CREATE TABLE SERVICIOS 
 (
-   IDSERVICIO           integer                        not null,
-   IDCLIENTE            integer                        not null,
-   CIUDAD               varchar(50)                    not null,
-   CALLEPRINCIPAL       varchar(50)                    not null,
-   CALLESECUNDARIA      varchar(50)                    null,
-   REFERENCIA           text                           not null,
-   TIPOSERVICIO         varchar(25)                    not null,
-   ESTADO				varchar(25)						not null,
-   constraint PK_SERVICIOS primary key clustered (IDSERVICIO)
+   IDSERVICIO           INT                            NOT NULL AUTO_INCREMENT,
+   IDCLIENTE            INT                            NOT NULL,
+   CIUDAD               VARCHAR(50)                    NOT NULL,
+   CALLEPRINCIPAL       VARCHAR(50)                    NOT NULL,
+   CALLESECUNDARIA      VARCHAR(50)                    NULL,
+   REFERENCIA           TEXT                           NOT NULL,
+   TIPOSERVICIO         VARCHAR(25)                    NOT NULL,
+   ESTADO               VARCHAR(25)                    NOT NULL,
+   CONSTRAINT PK_SERVICIOS PRIMARY KEY (IDSERVICIO)
 );
 
 /*==============================================================*/
 /* Table: SOLICITUDES                                           */
 /*==============================================================*/
-create table SOLICITUDES 
+CREATE TABLE SOLICITUDES 
 (
-   IDSOLICITUD          integer                        not null,
-   IDDANO               int                            not null,
-   IDCLIENTE            integer                        not null,
-   HORARIOATENCION      varchar(50)                    not null,
-   FECHAEMISION         date                           not null,
-   ESTADO               smallint                       not null,
-   constraint PK_SOLICITUDES primary key clustered (IDSOLICITUD)
+   IDSOLICITUD          INT                            NOT NULL AUTO_INCREMENT,
+   IDDANO               INT                            NOT NULL,
+   IDSERVICIO           INT                            NOT NULL,
+   HORARIOATENCION      VARCHAR(50)                    NOT NULL,
+   FECHAEMISION         DATE                           NOT NULL,
+   ESTADO               SMALLINT                       NOT NULL,
+   CONSTRAINT PK_SOLICITUDES PRIMARY KEY (IDSOLICITUD)
 );
 
 /*==============================================================*/
 /* Table: SOPORTES                                              */
 /*==============================================================*/
-create table SOPORTES 
+CREATE TABLE SOPORTES 
 (
-   IDSOPORTE            integer                        not null,
-   CEDULA               varchar(10)                    not null,
-   constraint PK_SOPORTES primary key clustered (IDSOPORTE)
+   IDSOPORTE            INT                            NOT NULL AUTO_INCREMENT,
+   CEDULA               VARCHAR(10)                    NOT NULL,
+   SECTORTRABAJO        VARCHAR(50)                    NOT NULL,
+   CONSTRAINT PK_SOPORTES PRIMARY KEY (IDSOPORTE)
 );
 
 /*==============================================================*/
 /* Table: TECNICOSCAMPO                                         */
 /*==============================================================*/
-create table TECNICOSCAMPO 
+CREATE TABLE TECNICOSCAMPO 
 (
-   IDTECNICOCAMPO       integer                        not null,
-   CEDULA               varchar(10)                    not null,
-   SECTORTRABAJO        varchar(50)                    not null,
-   constraint PK_TECNICOSCAMPO primary key clustered (IDTECNICOCAMPO)
+   IDTECNICOCAMPO       INT                            NOT NULL AUTO_INCREMENT,
+   CEDULA               VARCHAR(10)                    NOT NULL,
+   SECTORTRABAJO        VARCHAR(50)                    NOT NULL,
+   CONSTRAINT PK_TECNICOSCAMPO PRIMARY KEY (IDTECNICOCAMPO)
 );
 
 /*==============================================================*/
 /* Table: TIPODANOS                                             */
 /*==============================================================*/
-create table TIPODANOS 
+CREATE TABLE TIPODANOS 
 (
-   IDDANO               integer                        not null,
-   DETALLE              varchar(255)                   not null,
-   constraint PK_TIPODANOS primary key clustered (IDDANO)
+   IDDANO               INT                            NOT NULL AUTO_INCREMENT,
+   DETALLE              VARCHAR(255)                   NOT NULL,
+   CONSTRAINT PK_TIPODANOS PRIMARY KEY (IDDANO)
 );
 
 alter table ASIGNACIONES
@@ -148,23 +152,17 @@ alter table CLIENTES
       on update restrict
       on delete restrict;
 
-alter table SERVICIOS
-   add constraint FK_SERVICIO_REFERENCE_CLIENTES foreign key (IDCLIENTE)
-      references CLIENTES (IDCLIENTE)
-      on update restrict
-      on delete restrict;
+ALTER TABLE SOLICITUDES
+   ADD CONSTRAINT FK_SOLICITU_REFERENCE_TIPODANO FOREIGN KEY (IDDANO)
+      REFERENCES TIPODANOS (IDDANO)
+      ON UPDATE RESTRICT
+      ON DELETE RESTRICT;
 
-alter table SOLICITUDES
-   add constraint FK_SOLICITU_REFERENCE_CLIENTES foreign key (IDCLIENTE)
-      references CLIENTES (IDCLIENTE)
-      on update restrict
-      on delete restrict;
-
-alter table SOLICITUDES
-   add constraint FK_SOLICITU_REFERENCE_TIPODANO foreign key (IDDANO)
-      references TIPODANOS (IDDANO)
-      on update restrict
-      on delete restrict;
+ALTER TABLE SOLICITUDES
+   ADD CONSTRAINT FK_SOLICITU_REFERENCE_SERVICIOS FOREIGN KEY (IDSERVICIO)
+      REFERENCES SERVICIOS (IDSERVICIO)
+      ON UPDATE RESTRICT
+      ON DELETE RESTRICT;
 
 alter table SOPORTES
    add constraint FK_SOPORTES_REFERENCE_PERSONAS foreign key (CEDULA)
@@ -178,4 +176,63 @@ alter table TECNICOSCAMPO
       on update restrict
       on delete restrict;
 
+-- ------------------------------------------------------------------------------------------------------------------
 
+DELIMITER //
+CREATE PROCEDURE sp_insertarCliente(
+   IN p_CEDULA_PERSONA VARCHAR(10),
+   IN p_NOMBRE VARCHAR(50),
+   IN p_APELLIDO VARCHAR(50),
+   IN p_NROTELEFONO VARCHAR(10),
+   IN p_CONTRASENIA VARCHAR(150),
+   IN p_CORREO VARCHAR(100),
+   IN p_HASH VARCHAR(45)
+)
+BEGIN
+      -- Insertar en la tabla PERSONAS con el rol 'cliente'
+      INSERT INTO PERSONAS (CEDULA, NOMBRE, APELLIDO, NROTELEFONO, CONTRASENIA, OCUPACION, CORREO, ESTADO, hash_, activado)
+      VALUES (p_CEDULA_PERSONA, p_NOMBRE, p_APELLIDO, p_NROTELEFONO, p_CONTRASENIA, 'cliente', p_CORREO, 'activo', p_HASH, 0);
+
+      -- Insertar en la tabla CLIENTES
+      INSERT INTO CLIENTES (CEDULA)
+      VALUES (p_CEDULA_PERSONA);
+END //
+DELIMITER ;
+
+-- ---------------------------------------------------------------------------------------------------------------
+
+DELIMITER //
+CREATE PROCEDURE sp_insertarTrabajador(
+   IN p_CEDULA_PERSONA VARCHAR(10),
+   IN p_NOMBRE VARCHAR(50),
+   IN p_APELLIDO VARCHAR(50),
+   IN p_NROTELEFONO VARCHAR(10),
+   IN p_CONTRASENIA VARCHAR(150),
+   IN p_OCUPACION INT,
+   IN p_CORREO VARCHAR(100),
+   IN p_HASH VARCHAR(45),
+   IN p_SECTOR VARCHAR(50)
+)
+BEGIN
+   IF p_OCUPACION = 1 THEN
+      -- Insertar en la tabla PERSONAS con el rol 'soporte'
+      INSERT INTO PERSONAS (CEDULA, NOMBRE, APELLIDO, NROTELEFONO, CONTRASENIA, OCUPACION, CORREO, ESTADO, hash_, activado)
+      VALUES (p_CEDULA_PERSONA, p_NOMBRE, p_APELLIDO, p_NROTELEFONO, p_CONTRASENIA, 'soporte', p_CORREO, 'activo', p_HASH, 0);
+
+      -- Insertar en la tabla SOPORTES
+      INSERT INTO SOPORTES (CEDULA, SECTORTRABAJO)
+      VALUES (p_CEDULA_PERSONA, p_SECTOR);
+
+   ELSE
+      -- Insertar en la tabla PERSONAS con el rol 'empleado'
+      INSERT INTO PERSONAS (CEDULA, NOMBRE, APELLIDO, NROTELEFONO, CONTRASENIA, OCUPACION, CORREO, ESTADO, hash_, activado)
+      VALUES (p_CEDULA_PERSONA, p_NOMBRE, p_APELLIDO, p_NROTELEFONO, p_CONTRASENIA, 'empleado', p_CORREO, 'activo', p_HASH, 0);
+
+      -- Insertar en la tabla TECNICOSCAMPO
+      INSERT INTO TECNICOSCAMPO (CEDULA, SECTORTRABAJO)
+      VALUES (p_CEDULA_PERSONA, p_SECTOR);
+      
+END IF;
+
+END //
+DELIMITER ;
