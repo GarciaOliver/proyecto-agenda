@@ -241,17 +241,19 @@ DELIMITER ;
 -- ---------------------------------------------------------------------------------------------------------------
 
 DELIMITER //
+
 CREATE PROCEDURE sp_login(
    IN p_correo VARCHAR(100),
    IN p_contrasenia VARCHAR(150)
 )
 BEGIN
    -- Selecciona el rol, hash de la contraseña y el estado de activación
-   SELECT OCUPACION AS rol, CONTRASENIA AS hash_contrasenia, activado
-   FROM personas
-   WHERE CORREO = p_correo AND CONTRASENIA = p_contrasenia;
-
+   SELECT *
+   FROM PERSONAS
+   WHERE CORREO = p_correo AND CONTRASENIA = p_contrasenia;
 END //
+
 DELIMITER ;
+
 
 -- ---------------------------------------------------------------------------------------------------------------

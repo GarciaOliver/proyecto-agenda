@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (isset($_SESSION['nombreUsuario']) && isset($_SESSION['clave']))
+if (isset($_SESSION['datos']))
     session_destroy();
 ?>
 
@@ -40,6 +40,8 @@ if (isset($_SESSION['nombreUsuario']) && isset($_SESSION['clave']))
         }
     </style>
     <link href="signin.css" rel="stylesheet">
+    <script src="../public/jquery/jquery-3.7.1.js"></script>
+    <script src="../js/inicioSesion.js"></script>
 </head>
 
 <body class="text-center">

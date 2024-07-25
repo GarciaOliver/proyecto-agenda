@@ -12,7 +12,7 @@ function verificarInicioSesion(){
                 clave:clave
             },
             success: function(datos) {
-                if(datos==true){
+                if(datos=true){
                     window.location.href = '../vistas/inicio.php';
                 }else{
                     alert("No ingreso");

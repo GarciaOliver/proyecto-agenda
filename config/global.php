@@ -3,7 +3,7 @@
 define("DB_HOST", "localhost");
 
 // nombre de la base de datos
-define("DB_NAME", "GARCIA4to");
+define("DB_NAME", "agenda");
 
 //nombre de usuario de base de datos
 define("DB_USERNAME", "root");  //GARCIA
@@ -14,5 +14,4 @@ define("DB_PASSWORD", "bajoterra100");  //Garcia.2024
 //codificacion de caracteres
 define("DB_ENCODE", "utf8");
 
- 
- ?>
+?>
