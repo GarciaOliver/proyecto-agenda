@@ -17,6 +17,7 @@ if(isset($_POST['usuario']) && isset($_POST['clave'])){
             "nombre" => $resultado[1],
             "apellido" => $resultado[2],
             "telefono" => $resultado[3],
+            "contrasenia" => $resultado[4],
             "ocupacion" => $resultado[5],
             "correo" => $resultado[6],
             "estado" => $resultado[7]

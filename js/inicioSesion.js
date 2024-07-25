@@ -15,7 +15,7 @@ function verificarInicioSesion(){
                 if(datos=true){
                     window.location.href = '../vistas/inicio.php';
                 }else{
-                    alert("No ingreso");
+                    alert("Correo o contraseña incorrecta");
                 }
             }
         });

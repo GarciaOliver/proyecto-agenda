@@ -11,13 +11,13 @@ drop table if exists TECNICOSCAMPO;
 
 drop table if exists CLIENTES;
 
-drop table if exists PERSONAS;
+drop table if exists SOLICITUDES;
 
 drop table if exists TIPODANOS;
 
 drop table if exists SERVICIOS;
 
-drop table if exists SOLICITUDES;
+drop table if exists PERSONAS;
 
 /*==============================================================*/
 /* Table: ASIGNACIONES                                          */
@@ -35,16 +35,6 @@ CREATE TABLE ASIGNACIONES
    ESTADO               INT                            NOT NULL,
    OBSERVACION          TEXT                           NOT NULL,
    CONSTRAINT PK_ASIGNACIONES PRIMARY KEY (IDTAREA)
-);
-
-/*==============================================================*/
-/* Table: CLIENTES                                              */
-/*==============================================================*/
-CREATE TABLE CLIENTES 
-(
-   CEDULA               VARCHAR(10)                    NOT NULL,
-   IDCLIENTE            INT                            NOT NULL AUTO_INCREMENT,
-   CONSTRAINT PK_CLIENTES PRIMARY KEY (IDCLIENTE)
 );
 
 /*==============================================================*/
@@ -72,13 +62,14 @@ CREATE TABLE PERSONAS
 CREATE TABLE SERVICIOS 
 (
    IDSERVICIO           INT                            NOT NULL AUTO_INCREMENT,
-   IDCLIENTE            INT                            NOT NULL,
+   IDPERSONA            VARCHAR(10)                    NOT NULL,
    CIUDAD               VARCHAR(50)                    NOT NULL,
    CALLEPRINCIPAL       VARCHAR(50)                    NOT NULL,
    CALLESECUNDARIA      VARCHAR(50)                    NULL,
+   NROCASA				VARCHAR(5)						NOT NULL,
    REFERENCIA           TEXT                           NOT NULL,
    TIPOSERVICIO         VARCHAR(25)                    NOT NULL,
-   ESTADO               VARCHAR(25)                    NOT NULL,
+   ESTADO               VARCHAR(25)                    DEFAULT 'activo',
    CONSTRAINT PK_SERVICIOS PRIMARY KEY (IDSERVICIO)
 );
 
@@ -147,11 +138,11 @@ alter table ASIGNACIONES
       on update restrict
       on delete restrict;
 
-alter table CLIENTES
-   add constraint FK_CLIENTES_REFERENCE_PERSONAS foreign key (CEDULA)
-      references PERSONAS (CEDULA)
-      on update restrict
-      on delete restrict;
+ALTER TABLE servicios
+   ADD CONSTRAINT FK_SERVICIO_REFERENCE_PERSONA FOREIGN KEY (IDPERSONA)
+      REFERENCES PERSONAS (CEDULA)
+      ON UPDATE RESTRICT
+      ON DELETE RESTRICT;
 
 ALTER TABLE SOLICITUDES
    ADD CONSTRAINT FK_SOLICITU_REFERENCE_TIPODANO FOREIGN KEY (IDDANO)
@@ -194,9 +185,6 @@ BEGIN
       INSERT INTO PERSONAS (CEDULA, NOMBRE, APELLIDO, NROTELEFONO, CONTRASENIA, OCUPACION, CORREO, ESTADO, hash_, activado)
       VALUES (p_CEDULA_PERSONA, p_NOMBRE, p_APELLIDO, p_NROTELEFONO, p_CONTRASENIA, 'cliente', p_CORREO, 'activo', p_HASH, 0);
 
-      -- Insertar en la tabla CLIENTES
-      INSERT INTO CLIENTES (CEDULA)
-      VALUES (p_CEDULA_PERSONA);
 END //
 DELIMITER ;
 
@@ -257,3 +245,39 @@ DELIMITER ;
 
 
 -- ---------------------------------------------------------------------------------------------------------------
+
+DELIMITER //
+
+CREATE PROCEDURE sp_insertarServicio(
+   IN p_idpersona VARCHAR(10),
+   IN p_ciudad VARCHAR(50),
+   IN p_calleprincipal VARCHAR(50),
+   IN p_callesecundaria VARCHAR(50),
+   IN p_nrocasa VARCHAR(5),
+   IN p_referencia TEXT,
+   IN p_tiposervicio VARCHAR(25)
+)
+BEGIN
+   INSERT INTO SERVICIOS (IDPERSONA, CIUDAD, CALLEPRINCIPAL, CALLESECUNDARIA, NROCASA, REFERENCIA, TIPOSERVICIO)
+   VALUES (p_idpersona, p_ciudad, p_calleprincipal, p_callesecundaria, p_nrocasa, p_referencia, p_tiposervicio);
+END //
+
+DELIMITER ;
+
+-- ------------------------------------------------------------------------------------------------------------------
+
+DELIMITER //
+
+CREATE PROCEDURE sp_mostrarServiciosPersona(
+   IN p_idpersona VARCHAR(10)
+)
+BEGIN
+   SELECT *
+   FROM SERVICIOS
+   WHERE IDPERSONA = p_idpersona;
+END //
+
+DELIMITER ;
+
+
+-- ------------------------------------------------------------------------------------------------------------------
