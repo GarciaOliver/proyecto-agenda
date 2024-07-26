@@ -13,7 +13,7 @@ function verificarInicioSesion(){
             },
             success: function(datos) {
                 if(datos=true){
-                    window.location.href = '../vistas/inicio.php';
+                    window.location.href = '../vistas/formularioServicio.php';
                 }else{
                     alert("Correo o contraseña incorrecta");
                 }

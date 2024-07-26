@@ -58,11 +58,11 @@ if (isset($_SESSION['datos']))
             <label for="floatingPassword">Contraseña</label>
         </div>
         <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" value="remember-me"> Remember me
-            </label>
+            
         </div>
-        <button class="w-100 btn btn-lg btn-primary" onclick="verificarInicioSesion()">Ingresar</button><br>
+        <div class="mb-4">
+        <button class="w-100 btn btn-lg btn-primary" onclick="verificarInicioSesion()">Ingresar</button>
+        </div>
         <button class="w-100 btn btn-lg btn-primary" onclick="">Registrar</button>
     </main>
 

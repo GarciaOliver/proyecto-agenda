@@ -1,9 +1,3 @@
-<?php
-session_start();
-if(isset($_SESSION['datos']['cedula'])){
-
-?>
-
 <!doctype html>
 <html lang="en">
 
@@ -22,23 +16,16 @@ if(isset($_SESSION['datos']['cedula'])){
             <input type="text" id="cedula" name="cedula">
         </div>
         <div class="mb-3">
-            <label class="form-label">Tipo de servicio*</label>
-            <select class="form-select" name="servicio" id="servicio">
-                <option value="inalambrico">Inalámbrico</option>
-                <option value="fibra">Fibra Óptica</option>
-            </select>
+            <label class="form-label">Nombre y Apellido del cliente*</label>
+            <input type="text" id="nombre" name="nombre">
         </div>
         <div class="mb-3">
-            <label class="form-label">Ciudad*</label>
-            <select class="form-select" name="ciudad" id="ciudad">
-                <option value="ibarra">Ibarra</option>
-                <option value="pimampiro">Pimampiro</option>
-            </select>
+            <label class="form-label">Número de teléfono*</label>
+            <input type="text" id="nrotelefono" name="nrotelefono">
         </div>
-        
         <div class="mb-3">
-            <label class="form-label">Calle principal*</label>
-            <input type="text" id="principal" name="principal">
+            <label class="form-label">Correo Electrónico*</label>
+            <input type="text" id="correo" name="correo">
         </div>
         <div class="mb-3">
             <label class="form-label">Calle secundaria</label>
@@ -60,9 +47,3 @@ if(isset($_SESSION['datos']['cedula'])){
 </body>
 
 </html>
-
-<?php
-}else{
-    header("Location: inicioSesion.php");
-}
-?>

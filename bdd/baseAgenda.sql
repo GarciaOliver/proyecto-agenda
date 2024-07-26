@@ -3,174 +3,146 @@
 /* Created on:     18/7/2024 16:41:55                           */
 /*==============================================================*/
 
-drop table if exists ASIGNACIONES;
+drop table if exists ORDEN;
 
-drop table if exists SOPORTES;
+drop table if exists SOPORTE;
 
-drop table if exists TECNICOSCAMPO;
+drop table if exists TECNICO;
 
-drop table if exists CLIENTES;
+drop table if exists CLIENTE;
 
-drop table if exists SOLICITUDES;
+drop table if exists SOLICITUD;
 
-drop table if exists TIPODANOS;
-
-drop table if exists SERVICIOS;
-
-drop table if exists PERSONAS;
+drop table if exists SERVICIO;
 
 /*==============================================================*/
-/* Table: ASIGNACIONES                                          */
+/* Table: SERVICIO                                             */
 /*==============================================================*/
-CREATE TABLE ASIGNACIONES 
-(
-   IDTAREA              INT                            NOT NULL AUTO_INCREMENT,
-   IDSOLICITUD          INT                            NOT NULL,
-   IDTECNICOCAMPO       INT                            NOT NULL,
-   IDSOPORTE            INT                            NOT NULL,
-   RELEVANCIA           VARCHAR(50)                    NOT NULL,
-   FECHAEMISION         DATE                           NOT NULL,
-   FECHAFIN             DATETIME                       NULL,
-   FECHAELABORACION     DATE                           NOT NULL,
-   ESTADO               INT                            NOT NULL,
-   OBSERVACION          TEXT                           NOT NULL,
-   CONSTRAINT PK_ASIGNACIONES PRIMARY KEY (IDTAREA)
-);
-
-/*==============================================================*/
-/* Table: PERSONAS                                              */
-/*==============================================================*/
-CREATE TABLE PERSONAS 
-(
-   CEDULA               VARCHAR(10)                    NOT NULL,
-   NOMBRE               VARCHAR(50)                    NOT NULL,
-   APELLIDO             VARCHAR(50)                    NOT NULL,
-   NROTELEFONO          VARCHAR(10)                    NOT NULL,
-   CONTRASENIA          VARCHAR(150)                   NOT NULL,
-   OCUPACION            VARCHAR(50)                    NOT NULL,
-   CORREO               VARCHAR(100)                   NOT NULL,
-   ESTADO               VARCHAR(25)                    NOT NULL,
-   hash_                VARCHAR(45)                    DEFAULT NULL,
-   ACTIVADO             TINYINT(1)                     DEFAULT 0,
-   CONSTRAINT CHK_OCUPACION CHECK (OCUPACION IN ('cliente','soporte','empleado')),
-   CONSTRAINT PK_PERSONAS PRIMARY KEY (CEDULA)
-);
-
-/*==============================================================*/
-/* Table: SERVICIOS                                             */
-/*==============================================================*/
-CREATE TABLE SERVICIOS 
+CREATE TABLE SERVICIO 
 (
    IDSERVICIO           INT                            NOT NULL AUTO_INCREMENT,
-   IDPERSONA            VARCHAR(10)                    NOT NULL,
+   IDCLIENTE            VARCHAR(10)                    NOT NULL,
    CIUDAD               VARCHAR(50)                    NOT NULL,
    CALLEPRINCIPAL       VARCHAR(50)                    NOT NULL,
    CALLESECUNDARIA      VARCHAR(50)                    NULL,
-   NROCASA				VARCHAR(5)						NOT NULL,
    REFERENCIA           TEXT                           NOT NULL,
    TIPOSERVICIO         VARCHAR(25)                    NOT NULL,
    ESTADO               VARCHAR(25)                    DEFAULT 'activo',
-   CONSTRAINT PK_SERVICIOS PRIMARY KEY (IDSERVICIO)
+   CONSTRAINT PK_SERVICIO PRIMARY KEY (IDSERVICIO)
 );
 
 /*==============================================================*/
-/* Table: SOLICITUDES                                           */
+/* Table: CLIENTE                                              */
 /*==============================================================*/
-CREATE TABLE SOLICITUDES 
+CREATE TABLE CLIENTE
+(
+   CEDULA               VARCHAR(10)                    NOT NULL,
+   NOMBRE               VARCHAR(100)                    NOT NULL,
+   NROTELEFONO          VARCHAR(10)                    NOT NULL,
+   CONTRASENIA          VARCHAR(150)                   NOT NULL,
+   CORREO               VARCHAR(100)                   NOT NULL,
+   ESTADO               TINYINT(1)                    NOT NULL,
+   hash_                VARCHAR(45)                    DEFAULT NULL,
+   ACTIVADO             TINYINT(1)                     DEFAULT 0,
+   CONSTRAINT PK_PERSONA PRIMARY KEY (CEDULA)
+);
+
+/*==============================================================*/
+/* Table: SOPORTE                                              */
+/*==============================================================*/
+CREATE TABLE SOPORTE 
+(
+   CEDULA               VARCHAR(10)                    NOT NULL,
+   NOMBRE               VARCHAR(100)                    NOT NULL,
+   NROTELEFONO          VARCHAR(10)                    NOT NULL,
+   CONTRASENIA          VARCHAR(150)                   NOT NULL,
+   ESTADO               TINYINT(1)                    NOT NULL,
+   LUGAR				VARCHAR(50)						NOT NULL,
+   ACTIVADO             TINYINT(1)                     DEFAULT 0,
+   CONSTRAINT PK_SOPORTE PRIMARY KEY (CEDULA)
+);
+
+/*==============================================================*/
+/* Table: TECNICO                                         */
+/*==============================================================*/
+CREATE TABLE TECNICO 
+(
+   CEDULA               VARCHAR(10)                    NOT NULL,
+   NOMBRE               VARCHAR(100)                    NOT NULL,
+   NROTELEFONO          VARCHAR(10)                    NOT NULL,
+   CONTRASENIA          VARCHAR(150)                   NOT NULL,
+   ESTADO               TINYINT(1)                    NOT NULL,
+   LUGAR				VARCHAR(50)						NOT NULL,
+   ACTIVADO             TINYINT(1)                     DEFAULT 0,
+   CONSTRAINT PK_TECNICO PRIMARY KEY (CEDULA)
+);
+
+/*==============================================================*/
+/* Table: SOLICITUD                                           */
+/*==============================================================*/
+CREATE TABLE SOLICITUD 
 (
    IDSOLICITUD          INT                            NOT NULL AUTO_INCREMENT,
-   IDDANO               INT                            NOT NULL,
-   IDSERVICIO           INT                            NOT NULL,
+   IDSERVICIO			INT								NOT NULL,
+   IDSOPORTE			VARCHAR(10),
+   TIPODANO             VARCHAR(50)                    NOT NULL,
    HORARIOATENCION      VARCHAR(50)                    NOT NULL,
    FECHAEMISION         DATE                           NOT NULL,
    ESTADO               SMALLINT                       NOT NULL,
    DETALLE				TEXT							NOT NULL,
-   CONSTRAINT PK_SOLICITUDES PRIMARY KEY (IDSOLICITUD)
+   CONSTRAINT PK_SOLICITUD PRIMARY KEY (IDSOLICITUD)
 );
 
 /*==============================================================*/
-/* Table: SOPORTES                                              */
+/* Table: ORDEN                                          */
 /*==============================================================*/
-CREATE TABLE SOPORTES 
+CREATE TABLE ORDEN 
 (
-   IDSOPORTE            INT                            NOT NULL AUTO_INCREMENT,
-   CEDULA               VARCHAR(10)                    NOT NULL,
-   SECTORTRABAJO        VARCHAR(50)                    NOT NULL,
-   CONSTRAINT PK_SOPORTES PRIMARY KEY (IDSOPORTE)
+   IDORDEN              INT                            NOT NULL AUTO_INCREMENT,
+   IDSOLICITUD          INT                            NOT NULL,
+   IDTECNICO       		VARCHAR(10)                    NOT NULL,
+   RELEVANCIA           VARCHAR(50)                    NOT NULL,
+   FECHAEMISION         DATE                           NOT NULL,
+   FECHAFIN             DATE                       		NULL,
+   FECHAELABORACION     DATE                           NOT NULL,
+   ESTADO               VARCHAR(50)                    NOT NULL,
+   OBSERVACION          TEXT                           NOT NULL,
+   CONSTRAINT PK_ORDEN PRIMARY KEY (IDORDEN)
 );
 
-/*==============================================================*/
-/* Table: TECNICOSCAMPO                                         */
-/*==============================================================*/
-CREATE TABLE TECNICOSCAMPO 
-(
-   IDTECNICOCAMPO       INT                            NOT NULL AUTO_INCREMENT,
-   CEDULA               VARCHAR(10)                    NOT NULL,
-   SECTORTRABAJO        VARCHAR(50)                    NOT NULL,
-   CONSTRAINT PK_TECNICOSCAMPO PRIMARY KEY (IDTECNICOCAMPO)
-);
-
-/*==============================================================*/
-/* Table: TIPODANOS                                             */
-/*==============================================================*/
-CREATE TABLE TIPODANOS 
-(
-   IDDANO               INT                            NOT NULL AUTO_INCREMENT,
-   DETALLE              VARCHAR(255)                   NOT NULL,
-   CONSTRAINT PK_TIPODANOS PRIMARY KEY (IDDANO)
-);
-
-alter table ASIGNACIONES
-   add constraint FK_ASIGNACI_REFERENCE_TECNICOS foreign key (IDTECNICOCAMPO)
-      references TECNICOSCAMPO (IDTECNICOCAMPO)
+alter table ORDEN
+   add constraint FK_ORDEN_REFERENCE_TECNICO foreign key (IDTECNICO)
+      references TECNICO (CEDULA)
       on update restrict
       on delete restrict;
 
-alter table ASIGNACIONES
-   add constraint FK_ASIGNACI_REFERENCE_SOPORTES foreign key (IDSOPORTE)
-      references SOPORTES (IDSOPORTE)
+alter table ORDEN
+   add constraint FK_ORDEN_REFERENCE_SOLICITUD foreign key (IDSOLICITUD)
+      references SOLICITUD (IDSOLICITUD)
       on update restrict
       on delete restrict;
 
-alter table ASIGNACIONES
-   add constraint FK_ASIGNACI_REFERENCE_SOLICITU foreign key (IDSOLICITUD)
-      references SOLICITUDES (IDSOLICITUD)
-      on update restrict
-      on delete restrict;
-
-ALTER TABLE servicios
-   ADD CONSTRAINT FK_SERVICIO_REFERENCE_PERSONA FOREIGN KEY (IDPERSONA)
-      REFERENCES PERSONAS (CEDULA)
+ALTER TABLE SERVICIO
+   ADD CONSTRAINT FK_SERVICIO_REFERENCE_CLIENTE FOREIGN KEY (IDCLIENTE)
+      REFERENCES CLIENTE (CEDULA)
       ON UPDATE RESTRICT
       ON DELETE RESTRICT;
 
-ALTER TABLE SOLICITUDES
-   ADD CONSTRAINT FK_SOLICITU_REFERENCE_TIPODANO FOREIGN KEY (IDDANO)
-      REFERENCES TIPODANOS (IDDANO)
+ALTER TABLE SOLICITUD
+   ADD CONSTRAINT FK_SOLICITU_REFERENCE_SERVICIO FOREIGN KEY (IDSERVICIO)
+      REFERENCES SERVICIO (IDSERVICIO)
       ON UPDATE RESTRICT
       ON DELETE RESTRICT;
 
-ALTER TABLE SOLICITUDES
-   ADD CONSTRAINT FK_SOLICITU_REFERENCE_SERVICIOS FOREIGN KEY (IDSERVICIO)
-      REFERENCES SERVICIOS (IDSERVICIO)
+ALTER TABLE SOLICITUD
+   ADD CONSTRAINT FK_SOLICITU_REFERENCE_SOPORTE FOREIGN KEY (IDSOPORTE)
+      REFERENCES SOPORTE (CEDULA)
       ON UPDATE RESTRICT
       ON DELETE RESTRICT;
-
-alter table SOPORTES
-   add constraint FK_SOPORTES_REFERENCE_PERSONAS foreign key (CEDULA)
-      references PERSONAS (CEDULA)
-      on update restrict
-      on delete restrict;
-
-alter table TECNICOSCAMPO
-   add constraint FK_TECNICOS_REFERENCE_PERSONAS foreign key (CEDULA)
-      references PERSONAS (CEDULA)
-      on update restrict
-      on delete restrict;
 
 -- ------------------------------------------------------------------------------------------------------------------
 
-DELIMITER //
+/*DELIMITER //
 CREATE PROCEDURE sp_insertarCliente(
    IN p_CEDULA_PERSONA VARCHAR(10),
    IN p_NOMBRE VARCHAR(50),
