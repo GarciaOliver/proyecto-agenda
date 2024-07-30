@@ -106,7 +106,8 @@ CREATE TABLE ORDEN
    FECHAFIN             DATE                       		NULL,
    FECHAELABORACION     DATE                           NOT NULL,
    ESTADO               VARCHAR(50)                    NOT NULL,
-   OBSERVACION          TEXT                           NOT NULL,
+   OBSERVACIONTECNICO	TEXT,
+   OBSERVACIONSOPORTE   TEXT                           NOT NULL,
    CONSTRAINT PK_ORDEN PRIMARY KEY (IDORDEN)
 );
 
@@ -141,65 +142,145 @@ ALTER TABLE SOLICITUD
       ON DELETE RESTRICT;
 
 -- ------------------------------------------------------------------------------------------------------------------
+-- Insertar cliente
 
-/*DELIMITER //
+DELIMITER //
 CREATE PROCEDURE sp_insertarCliente(
-   IN p_CEDULA_PERSONA VARCHAR(10),
-   IN p_NOMBRE VARCHAR(50),
-   IN p_APELLIDO VARCHAR(50),
-   IN p_NROTELEFONO VARCHAR(10),
-   IN p_CONTRASENIA VARCHAR(150),
-   IN p_CORREO VARCHAR(100),
-   IN p_HASH VARCHAR(45)
+   IN c_CEDULA VARCHAR(10),
+   IN c_NOMBRE VARCHAR(50),
+   IN c_NROTELEFONO VARCHAR(10),
+   IN c_CORREO VARCHAR(100),
+   IN c_CONTRASENIA VARCHAR(150)
 )
 BEGIN
-      -- Insertar en la tabla PERSONAS con el rol 'cliente'
-      INSERT INTO PERSONAS (CEDULA, NOMBRE, APELLIDO, NROTELEFONO, CONTRASENIA, OCUPACION, CORREO, ESTADO, hash_, activado)
-      VALUES (p_CEDULA_PERSONA, p_NOMBRE, p_APELLIDO, p_NROTELEFONO, p_CONTRASENIA, 'cliente', p_CORREO, 'activo', p_HASH, 0);
-
+      -- Insertar cliente
+      INSERT INTO CLIENTE (CEDULA, NOMBRE, NROTELEFONO, CONTRASENIA, CORREO, ESTADO)
+      VALUES (c_CEDULA, c_NOMBRE, c_NROTELEFONO, c_CONTRASENIA, c_CORREO, 1);
 END //
 DELIMITER ;
+-- -----------------------------------------------------------------------------------------------------------------
+-- Mostrar todos los clientes
 
--- ---------------------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE sp_mostrarClientes()
+BEGIN
+      -- Mostrar todos los clientes
+      SELECT * FROM cliente;
+END //
+DELIMITER ;
+-- -------------------------------------------------------------------------------------------------------------------
+-- Insertar soporte o tecnico
 
 DELIMITER //
 CREATE PROCEDURE sp_insertarTrabajador(
-   IN p_CEDULA_PERSONA VARCHAR(10),
-   IN p_NOMBRE VARCHAR(50),
-   IN p_APELLIDO VARCHAR(50),
-   IN p_NROTELEFONO VARCHAR(10),
-   IN p_CONTRASENIA VARCHAR(150),
-   IN p_OCUPACION INT,
-   IN p_CORREO VARCHAR(100),
-   IN p_HASH VARCHAR(45),
-   IN p_SECTOR VARCHAR(50)
+    IN p_cedula VARCHAR(10),
+    IN p_nombre VARCHAR(100),
+    IN p_nroTelefono VARCHAR(10),
+    IN p_contrasenia VARCHAR(150),
+    IN p_estado TINYINT(1),
+    IN p_lugar VARCHAR(50),
+    IN p_ocupacion TINYINT(1)
 )
 BEGIN
-   IF p_OCUPACION = 1 THEN
-      -- Insertar en la tabla PERSONAS con el rol 'soporte'
-      INSERT INTO PERSONAS (CEDULA, NOMBRE, APELLIDO, NROTELEFONO, CONTRASENIA, OCUPACION, CORREO, ESTADO, hash_, activado)
-      VALUES (p_CEDULA_PERSONA, p_NOMBRE, p_APELLIDO, p_NROTELEFONO, p_CONTRASENIA, 'soporte', p_CORREO, 'activo', p_HASH, 0);
+	IF p_ocupacion = 1 THEN
+		-- Insertar un soporte
+		INSERT INTO SOPORTE (CEDULA, NOMBRE, NROTELEFONO, CONTRASENIA, ESTADO, LUGAR, ACTIVADO)
+		VALUES (p_cedula, p_nombre, p_nroTelefono, p_contrasenia, p_estado, p_lugar, 1);
+    
+	ELSE
+		-- Insertar un tecnico
+		INSERT INTO TECNICO (CEDULA, NOMBRE, NROTELEFONO, CONTRASENIA, ESTADO, LUGAR, ACTIVADO)
+		VALUES (p_cedula, p_nombre, p_nroTelefono, p_contrasenia, p_estado, p_lugar, 1);
+	END IF;
 
-      -- Insertar en la tabla SOPORTES
-      INSERT INTO SOPORTES (CEDULA, SECTORTRABAJO)
-      VALUES (p_CEDULA_PERSONA, p_SECTOR);
+    
+END//
+DELIMITER ;
+-- ---------------------------------------------------------------------------------------------------------------
+-- Función Insertar servicio
+DELIMITER //
 
-   ELSE
-      -- Insertar en la tabla PERSONAS con el rol 'empleado'
-      INSERT INTO PERSONAS (CEDULA, NOMBRE, APELLIDO, NROTELEFONO, CONTRASENIA, OCUPACION, CORREO, ESTADO, hash_, activado)
-      VALUES (p_CEDULA_PERSONA, p_NOMBRE, p_APELLIDO, p_NROTELEFONO, p_CONTRASENIA, 'empleado', p_CORREO, 'activo', p_HASH, 0);
+CREATE FUNCTION fn_insertarServicio(
+   p_idcliente VARCHAR(10),
+   p_ciudad VARCHAR(50),
+   p_calleprincipal VARCHAR(50),
+   p_callesecundaria VARCHAR(50),
+   p_referencia TEXT,
+   p_tiposervicio VARCHAR(25)
+) RETURNS BOOLEAN
+    DETERMINISTIC
+    MODIFIES SQL DATA
+BEGIN
+   DECLARE EXIT HANDLER FOR SQLEXCEPTION
+   BEGIN
+       RETURN FALSE;
+   END;
 
-      -- Insertar en la tabla TECNICOSCAMPO
-      INSERT INTO TECNICOSCAMPO (CEDULA, SECTORTRABAJO)
-      VALUES (p_CEDULA_PERSONA, p_SECTOR);
-      
-END IF;
+   INSERT INTO SERVICIO (IDCLIENTE, CIUDAD, CALLEPRINCIPAL, CALLESECUNDARIA, REFERENCIA, TIPOSERVICIO, ESTADO)
+   VALUES (p_idcliente, p_ciudad, p_calleprincipal, p_callesecundaria, p_referencia, p_tiposervicio, 'ACTIVO');
 
+   RETURN TRUE;
 END //
+
 DELIMITER ;
 
--- ---------------------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------------------------
+-- Función insertar solicitud
+DELIMITER //
 
+CREATE FUNCTION fn_insertarSolicitud(
+   p_idservicio INT,
+   p_tipodano VARCHAR(50),
+   p_horarioatencion VARCHAR(50),
+   p_estado SMALLINT,
+   p_detalle TEXT
+) RETURNS BOOLEAN
+    DETERMINISTIC
+    MODIFIES SQL DATA
+BEGIN
+   DECLARE EXIT HANDLER FOR SQLEXCEPTION
+   BEGIN
+       RETURN FALSE;
+   END;
+
+   INSERT INTO SOLICITUD (IDSERVICIO, IDSOPORTE, TIPODANO, HORARIOATENCION, FECHAEMISION, ESTADO, DETALLE)
+   VALUES (p_idservicio, null, p_tipodano, p_horarioatencion, CURDATE(), p_estado, p_detalle);
+
+   RETURN TRUE;
+END//
+
+DELIMITER ;
+
+-- -------------------------------------------------------------------------------------------------------------------
+-- Función crear 
+DELIMITER //
+
+CREATE FUNCTION fn_insertarOrden(
+   p_idsolicitud INT,
+   p_idtecnico VARCHAR(10),
+   p_relevancia VARCHAR(50),
+   p_fechaelaboracion DATE,
+   p_observacionsoporte TEXT
+) RETURNS BOOLEAN
+    DETERMINISTIC
+    MODIFIES SQL DATA
+BEGIN
+   DECLARE EXIT HANDLER FOR SQLEXCEPTION
+   BEGIN
+       RETURN FALSE;
+   END;
+
+   INSERT INTO ORDEN (IDSOLICITUD, IDTECNICO, RELEVANCIA, FECHAEMISION, FECHAELABORACION, ESTADO, OBSERVACIONSOPORTE)
+   VALUES (p_idsolicitud, p_idtecnico, p_relevancia, CURDATE(), p_fechaelaboracion, 'ESPERA', p_observacionsoporte);
+
+   RETURN TRUE;
+END//
+
+DELIMITER ;
+
+
+-- -------------------------------------------------------------------------------------------------------------------
+/*
 DELIMITER //
 
 CREATE PROCEDURE sp_login(
@@ -220,26 +301,6 @@ DELIMITER ;
 
 DELIMITER //
 
-CREATE PROCEDURE sp_insertarServicio(
-   IN p_idpersona VARCHAR(10),
-   IN p_ciudad VARCHAR(50),
-   IN p_calleprincipal VARCHAR(50),
-   IN p_callesecundaria VARCHAR(50),
-   IN p_nrocasa VARCHAR(5),
-   IN p_referencia TEXT,
-   IN p_tiposervicio VARCHAR(25)
-)
-BEGIN
-   INSERT INTO SERVICIOS (IDPERSONA, CIUDAD, CALLEPRINCIPAL, CALLESECUNDARIA, NROCASA, REFERENCIA, TIPOSERVICIO)
-   VALUES (p_idpersona, p_ciudad, p_calleprincipal, p_callesecundaria, p_nrocasa, p_referencia, p_tiposervicio);
-END //
-
-DELIMITER ;
-
--- ------------------------------------------------------------------------------------------------------------------
-
-DELIMITER //
-
 CREATE PROCEDURE sp_mostrarServiciosPersona(
    IN p_idpersona VARCHAR(10)
 )
@@ -251,5 +312,5 @@ END //
 
 DELIMITER ;
 
-
+*/
 -- ------------------------------------------------------------------------------------------------------------------
