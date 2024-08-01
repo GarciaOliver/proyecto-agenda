@@ -143,7 +143,6 @@ ALTER TABLE SOLICITUD
 
 -- ------------------------------------------------------------------------------------------------------------------
 -- Insertar cliente
-
 DELIMITER //
 CREATE PROCEDURE sp_insertarCliente(
    IN c_CEDULA VARCHAR(10),
@@ -158,9 +157,9 @@ BEGIN
       VALUES (c_CEDULA, c_NOMBRE, c_NROTELEFONO, c_CONTRASENIA, c_CORREO, 1);
 END //
 DELIMITER ;
+
 -- -----------------------------------------------------------------------------------------------------------------
 -- Mostrar todos los clientes
-
 DELIMITER //
 CREATE PROCEDURE sp_mostrarClientes()
 BEGIN
@@ -168,9 +167,9 @@ BEGIN
       SELECT * FROM cliente;
 END //
 DELIMITER ;
+
 -- -------------------------------------------------------------------------------------------------------------------
 -- Insertar soporte o tecnico
-
 DELIMITER //
 CREATE PROCEDURE sp_insertarTrabajador(
     IN p_cedula VARCHAR(10),
@@ -196,6 +195,7 @@ BEGIN
     
 END//
 DELIMITER ;
+
 -- ---------------------------------------------------------------------------------------------------------------
 -- Función Insertar servicio
 DELIMITER //
@@ -277,7 +277,16 @@ BEGIN
 END//
 
 DELIMITER ;
-
+-- -------------------------------------------------------------------------------------------------------------------
+-- Mostrar todos los servicios de un cliente
+DELIMITER //
+CREATE PROCEDURE sp_mostrarServiciosCliente(
+IN p_idcliente VARCHAR(10))
+BEGIN
+      -- Mostrar todos servicios de un cliente
+      SELECT * FROM servicio WHERE IDCLIENTE = p_idcliente;
+END //
+DELIMITER ;
 
 -- -------------------------------------------------------------------------------------------------------------------
 /*

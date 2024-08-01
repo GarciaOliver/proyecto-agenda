@@ -26,5 +26,21 @@ class servicio{
         }
 		
     }
+
+    public function mostrarServiciosCliente($cedula){
+
+        $consulta="call sp_mostrarServiciosCliente('$cedula');";
+        $resultado = ejecutarConsultaSP($consulta);
+		if ($resultado->num_rows > 0) {
+			$data = [];
+			
+			while ($fila = $resultado->fetch_assoc()) {
+				$data["data"][] = $fila;
+			}
+			return $data;
+		} else {
+			return null;
+		}
+    }
 }
 ?>
