@@ -21,20 +21,33 @@
                 <thead>
                     <tr>
                         <th>ID</th>
+                        <th>Propietario</th>
                         <th>Ciudad</th>
                         <th>Calle Principal</th>
                         <th>Calle Secundaria</th>
                         <th>Referencia</th>
                         <th>Tipo</th>
                         <th>Estado</th>
+                        <th>Editar/Eliminar</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="tbodyServicios">
                     <!-- Aquí se insertarán las filas dinámicamente -->
                 </tbody>
             </table>
         </div>
     </div>
+
+    <dialog id="modalEditar">
+        <h1>Edición de servicios</h1>
+        <input type="text" name="modalCiudad" id="modalCiudad">
+        <input type="text" name="modalPrincipal" id="modalPrincipal">
+        <input type="text" name="modalSecundaria" id="modalSecundaria">
+        <input type="text" name="modalReferencia" id="modalReferencia">
+
+        <input type="button" value="Cancelar" onclick="cerrarModal()">
+        <input type="button" value="Guardar" onclick="cerrarModal()">
+    </dialog>
 
     <!--------------JQuery--------------------------------->
     <script src="../public/jquery/jquery-3.7.1.js"></script>
@@ -53,6 +66,6 @@
     <script src="../public/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
     
 
-    <script src="../js/verServiciosClientes.js"></script>
+    <script src="../js/verServiciosTodos.js"></script>
 </body>
 </html>

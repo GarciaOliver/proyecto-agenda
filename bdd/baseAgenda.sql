@@ -278,13 +278,35 @@ END//
 
 DELIMITER ;
 -- -------------------------------------------------------------------------------------------------------------------
--- Mostrar todos los servicios de un cliente
+-- Mostrar los servicios de un cliente
 DELIMITER //
 CREATE PROCEDURE sp_mostrarServiciosCliente(
 IN p_idcliente VARCHAR(10))
 BEGIN
       -- Mostrar todos servicios de un cliente
       SELECT * FROM servicio WHERE IDCLIENTE = p_idcliente;
+END //
+DELIMITER ;
+-- -------------------------------------------------------------------------------------------------------------------
+-- Mostrar todos los servicios
+DELIMITER //
+CREATE PROCEDURE sp_mostrarServiciosTodos()
+BEGIN
+      -- Mostrar todos los servicios junto con el nombre del propietario
+      SELECT 
+          s.IDSERVICIO,
+          s.IDCLIENTE,
+          c.NOMBRE AS PROPIETARIO,
+          s.CIUDAD,
+          s.CALLEPRINCIPAL,
+          s.CALLESECUNDARIA,
+          s.REFERENCIA,
+          s.TIPOSERVICIO,
+          s.ESTADO
+      FROM 
+          SERVICIO s
+      JOIN 
+          CLIENTE c ON s.IDCLIENTE = c.CEDULA;
 END //
 DELIMITER ;
 

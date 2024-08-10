@@ -27,6 +27,21 @@ class servicio{
 		
     }
 
+    public function mostrarServiciosTodos(){
+        $consulta="call sp_mostrarServiciosTodos();";
+        $resultado = ejecutarConsultaSP($consulta);
+		if ($resultado->num_rows > 0) {
+			$data = [];
+			
+			while ($fila = $resultado->fetch_assoc()) {
+				$data['data'][] = $fila;
+			}
+			return $data;
+		} else {
+			return null;
+		}
+    }
+
     public function mostrarServiciosCliente($cedula){
 
         $consulta="call sp_mostrarServiciosCliente('$cedula');";
@@ -35,7 +50,7 @@ class servicio{
 			$data = [];
 			
 			while ($fila = $resultado->fetch_assoc()) {
-				$data["data"][] = $fila;
+				$data['data'][] = $fila;
 			}
 			return $data;
 		} else {
