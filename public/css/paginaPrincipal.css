@@ -1,0 +1,26 @@
+/* Estilo para la barra lateral */
+#sidebar {
+    height: 100vh;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: -250px; /* Inicialmente fuera de la vista */
+    z-index: 100;
+    padding-top: 20px;
+    transition: left 0.3s ease; /* Transición suave para el deslizamiento */
+}
+
+/* Estilo para el contenido cuando el menú está abierto */
+#page-content-wrapper {
+    margin-left: 0;
+    transition: margin-left 0.3s ease; /* Transición suave para el margen */
+}
+
+/* Clase para cuando el menú está abierto */
+#sidebar.open {
+    left: 0; /* Mueve la barra lateral a la vista */
+}
+
+#page-content-wrapper.open {
+    margin-left: 250px; /* Ajusta el margen del contenido */
+}
