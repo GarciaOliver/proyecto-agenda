@@ -1,20 +1,11 @@
-<?php
-session_start();
-if (isset($_SESSION['datos']))
-    session_destroy();
-?>
-
 <!doctype html>
 <html lang="en">
-
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Inicio de Sesión</title>
-
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sign-in/">
 
     <style>
         .bd-placeholder-img {
@@ -43,29 +34,22 @@ if (isset($_SESSION['datos']))
     <script src="../public/jquery/jquery-3.7.1.js"></script>
     <script src="../js/inicioSesion.js"></script>
 </head>
-
 <body class="text-center">
-
     <main class="form-signin">
         <img class="mb-4" src="../public/recursos/logo-redestel.jpeg" alt="logo-redestel" width="200" height="150">
         <h1>Inicio de Sesión</h1>
         <div class="form-floating">
-            <input type="email" class="form-control" id="usuario" name="clave">
-            <label for="floatingInput">Correo Electrónico o Cédula</label>
+            <input type="text" class="form-control" id="usuario" name="usuario">
+            <label for="usuario">Correo Electrónico o Cédula</label>
         </div>
         <div class="form-floating">
             <input type="password" class="form-control" id="clave" name="clave">
-            <label for="floatingPassword">Contraseña</label>
-        </div>
-        <div class="checkbox mb-3">
-            
+            <label for="clave">Contraseña</label>
         </div>
         <div class="mb-4">
-        <button class="w-100 btn btn-lg btn-primary" onclick="verificarInicioSesion()">Ingresar</button>
+            <button class="w-100 btn btn-lg btn-primary" onclick="verificarInicioSesion()">Ingresar</button>
         </div>
-        <button class="w-100 btn btn-lg btn-primary" onclick="">Registrar</button>
+        <a class="w-100 btn btn-lg btn-primary" href="../vistas/registroCliente.html">Registrarse</a>
     </main>
-
 </body>
-
 </html>

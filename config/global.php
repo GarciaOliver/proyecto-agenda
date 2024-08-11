@@ -9,7 +9,7 @@ define("DB_NAME", "agenda");
 define("DB_USERNAME", "root");  //GARCIA
 
 //conraseña del usuario de base de datos
-define("DB_PASSWORD", "bajoterra100");  //Garcia.2024
+define("DB_PASSWORD", "");  //Garcia.2024
 
 //codificacion de caracteres
 define("DB_ENCODE", "utf8");
