@@ -311,37 +311,13 @@ END //
 DELIMITER ;
 
 -- -------------------------------------------------------------------------------------------------------------------
-/*
 DELIMITER //
-
-CREATE PROCEDURE sp_login(
-   IN p_correo VARCHAR(100),
-   IN p_contrasenia VARCHAR(150)
-)
+CREATE PROCEDURE sp_mostrarServicioId(in sp_id int)
 BEGIN
-   -- Selecciona el rol, hash de la contraseña y el estado de activación
-   SELECT *
-   FROM PERSONAS
-   WHERE CORREO = p_correo AND CONTRASENIA = p_contrasenia;
+      SELECT * FROM servicio where IDSERVICIO=sp_id;
 END //
-
 DELIMITER ;
-
 
 -- ---------------------------------------------------------------------------------------------------------------
 
-DELIMITER //
-
-CREATE PROCEDURE sp_mostrarServiciosPersona(
-   IN p_idpersona VARCHAR(10)
-)
-BEGIN
-   SELECT *
-   FROM SERVICIOS
-   WHERE IDPERSONA = p_idpersona;
-END //
-
-DELIMITER ;
-
-*/
 -- ------------------------------------------------------------------------------------------------------------------
