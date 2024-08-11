@@ -311,13 +311,68 @@ END //
 DELIMITER ;
 
 -- -------------------------------------------------------------------------------------------------------------------
+-- Modificar los datos de un servicio
 DELIMITER //
-CREATE PROCEDURE sp_mostrarServicioId(in sp_id int)
+
+CREATE FUNCTION fn_modificarDatosServicio(
+    p_idservicio INT,
+    p_ciudad VARCHAR(50),
+    p_calleprincipal VARCHAR(50),
+    p_callesecundaria VARCHAR(50),
+    p_referencia TEXT,
+    p_tiposervicio VARCHAR(25)
+) 
+RETURNS BOOLEAN
+DETERMINISTIC
 BEGIN
-      SELECT * FROM servicio where IDSERVICIO=sp_id;
+    DECLARE resultado BOOLEAN;
+
+    UPDATE SERVICIO
+    SET 
+        CIUDAD = p_ciudad,
+        CALLEPRINCIPAL = p_calleprincipal,
+        CALLESECUNDARIA = p_callesecundaria,
+        REFERENCIA = p_referencia,
+        TIPOSERVICIO = p_tiposervicio
+    WHERE IDSERVICIO = p_idservicio;
+
+    IF ROW_COUNT() > 0 THEN
+        SET resultado = TRUE;
+    ELSE
+        SET resultado = FALSE;
+    END IF;
+
+    RETURN resultado;
 END //
+
 DELIMITER ;
 
 -- ---------------------------------------------------------------------------------------------------------------
+-- Modificar el estado de un servicio
+DELIMITER //
+
+CREATE FUNCTION fn_cambiarEstadoServicio(
+    p_idservicio INT,
+    p_nuevo_estado VARCHAR(25)
+) 
+RETURNS BOOLEAN
+DETERMINISTIC
+BEGIN
+    DECLARE resultado BOOLEAN;
+
+    UPDATE SERVICIO
+    SET ESTADO = p_nuevo_estado
+    WHERE IDSERVICIO = p_idservicio;
+
+    IF ROW_COUNT() > 0 THEN
+        SET resultado = TRUE;
+    ELSE
+        SET resultado = FALSE;
+    END IF;
+
+    RETURN resultado;
+END //
+
+DELIMITER ;
 
 -- ------------------------------------------------------------------------------------------------------------------

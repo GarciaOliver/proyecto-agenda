@@ -8,7 +8,7 @@ if (isset($_POST['id'])) {
 
     $contenido = '<div class="mb-3">
     <label class="form-label">Número de Servicio</label>
-    <input id="servicio" class="form-control" type="text" value="' . $datos[0]["IDSERVICIO"] . '" aria-label="Disabled input example" disabled readonly>
+    <input id="servicioDesactivar" class="form-control" type="text" value="' . $datos[0]["IDSERVICIO"] . '" aria-label="Disabled input example" disabled readonly>
 </div>
 <div class="mb-3">
     <label class="form-label">Cédula del Propietario</label>
@@ -20,7 +20,7 @@ if (isset($_POST['id'])) {
 
     $contenido .= '<div class="mb-3">
     <label class="form-label">Ciudad</label>
-    <select class="form-select" name="ciudadModal" id="ciudadModal">
+    <select class="form-select" name="ciudadModal" id="ciudadModal" aria-label="Disabled select example" disabled>
         <option value="ibarra" ' . $selectedIbarra . '>Ibarra</option>
         <option value="pimampiro" ' . $selectedPimampiro . '>Pimampiro</option>
     </select>
@@ -28,15 +28,15 @@ if (isset($_POST['id'])) {
 
     $contenido .= '<div class="mb-3">
     <label class="form-label">Calle Principal</label>
-    <input id="principalModal" class="form-control" type="text" value="' . $datos[0]["CALLEPRINCIPAL"] . '" aria-label="default input example">
+    <input id="principalModal" class="form-control" type="text" value="' . $datos[0]["CALLEPRINCIPAL"] . '" aria-label="Disabled input example" disabled readonly">
 </div>
 <div class="mb-3">
     <label class="form-label">Calle Secundaria</label>
-    <input id="secundariaModal" class="form-control" type="text" value="' . $datos[0]["CALLESECUNDARIA"] . '" aria-label="default input example">
+    <input id="secundariaModal" class="form-control" type="text" value="' . $datos[0]["CALLESECUNDARIA"] . '" aria-label="Disabled input example" disabled readonly">
 </div>
 <div class="mb-3">
     <label class="form-label">Referencia del domicilio</label>
-    <input id="referenciaModal" class="form-control" type="text" value="' . $datos[0]["REFERENCIA"] . '" placeholder="Un número de casa o una estructura cerca del domicilio" aria-label="default input example">
+    <input id="referenciaModal" class="form-control" type="text" value="' . $datos[0]["REFERENCIA"] . '" placeholder="Un número de casa o una estructura cerca del domicilio" aria-label="Disabled input example" disabled readonly">
 </div>';
     $tipoServicio = $datos[0]["TIPOSERVICIO"];
 
@@ -45,7 +45,7 @@ if (isset($_POST['id'])) {
 
     $contenido .= '<div class="mb-3">
     <label class="form-label">Tipo de Servicio</label>
-    <select class="form-select" name="tipoServicioModal" id="tipoServicioModal">
+    <select class="form-select" name="tipoServicioModal" id="tipoServicioModal" aria-label="Disabled select example" disabled>
         <option value="fibra" ' . $selectedFibra . '>Fibra Óptica</option>
         <option value="inalambrico" ' . $selectedInalambrico . '>Inalámbrico</option>
     </select>

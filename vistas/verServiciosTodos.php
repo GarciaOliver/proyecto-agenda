@@ -100,41 +100,33 @@
                     <h5 class="modal-title" id="exampleModalLabel">Modificar Servicio</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Número de Servicio</label>
-                        <input class="form-control" type="text" value="" aria-label="Disabled input example" disabled readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Ciudad</label>
-                        <select class="form-select" name="ciudad" id="ciudad">
-                            <option value="ibarra">Ibarra</option>
-                            <option value="pimampiro">Pimampiro</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Calle Principal</label>
-                        <input id="principal" class="form-control" type="text" aria-label="default input example">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Calle Secundaria</label>
-                        <input id="secundaria" class="form-control" type="text" aria-label="default input example">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Referencia del domicilio</label>
-                        <input id="referencia" class="form-control" type="text" placeholder="Un número de casa o una estructura cerca del domicilio" aria-label="default input example">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Tipo de Servicio</label>
-                        <select class="form-select" name="ciudad" id="ciudad">
-                            <option value="fibra">Fibra Óptica</option>
-                            <option value="inalambrico">Inalámbrico</option>
-                        </select>
-                    </div>
+                <div id="cuerpoModificar" class="modal-body">
+                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary">Guardar Cambios</button>
+                    <button type="button" class="btn btn-primary" onclick="guardarCambios()" data-bs-dismiss="modal">Guardar Cambios</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!----------------------------------------- Modal desactivación de un servicio -------------------->
+
+    <div class="modal fade" id="modalDesactivacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">¿Desea desactivar permanentemente el servicio con los siguientes datos?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div id="cuerpoDesactivar" class="modal-body">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" onclick="desactivarServicio()" data-bs-dismiss="modal">Desactivar Servicio</button>
                 </div>
 
             </div>

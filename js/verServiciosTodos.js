@@ -1,20 +1,73 @@
-//Funciones de la ventana emergente CREACIÓN SERVICIO-------------------------------------------------------------------------
+//Funciones de la ventana emergente ELIMINACIÓN SERVICIO-------------------------------------------------------------------------
 
-function recargar(){
-	
-	
+function modalDesactivarServicio(numServicio){
+	$.ajax({
+		type:"POST",
+        data:{id:numServicio},
+		url:"../controlador/mostrarServicioLimitado.php",
+		success: function(datos) {
+			$('#cuerpoDesactivar').html(datos);
+		}
+	});
+}
+
+function desactivarServicio(){
+    var id=$('#servicioDesactivar').val();
+
+    $.ajax({
+		type:"POST",
+        data:{id:id,
+            estado:"APAGADO"
+        },
+		url:"../controlador/modificarEstadoServicio.php",
+		success: function(datos) {
+			if(datos=true){
+                alert("Se modificó el servicio correctamente");
+            }else{
+                alert("Error");
+            }
+		}
+	});
 }
 
 //Funciones de la ventana emergente EDITAR SERVICIO-------------------------------------------------------------------------
 
-function editarServicio(numServicio){
+function modalEditarServicio(numServicio){
     $.ajax({
 		type:"POST",
         data:{id:numServicio},
 		url:"../controlador/mostrarServicio.php",
 		success: function(datos) {
+			$('#cuerpoModificar').html(datos);
+		}
+	});
+}
 
-			$('#cliente').html(datos);
+function guardarCambios(){
+    var id=$('#servicio').val();
+    var ciudad=$('#ciudadModal').val();
+    var principal=$('#principalModal').val();
+    var secundaria=$('#secundariaModal').val();
+    var referencia=$('#referenciaModal').val();
+    var tipo=$('#tipoServicioModal').val();
+
+
+    $.ajax({
+		type:"POST",
+        data:{id:id,
+            ciudad:ciudad,
+            principal:principal,
+            secundaria:secundaria,
+            referencia:referencia,
+            tipo:tipo
+        },
+		url:"../controlador/modificarServicio.php",
+		success: function(datos) {
+			if(datos=true){
+                alert("Se modificó el servicio correctamente");
+            }else{
+                alert("Error");
+            }
 		}
 	});
 }
@@ -62,9 +115,15 @@ let dataTableOpciones={
         {"data":"CALLESECUNDARIA"},
         {"data":"REFERENCIA"},
         {"data":"TIPOSERVICIO"},
-        {"data":"ESTADO"},
+        {"data":"ESTADO","render":function(data){
+            if(data=="ACTIVO"){
+                return '<i class="fa-solid fa-circle-check" style="color: #38ff59; font-size: 32px;"></i>'
+            }else{
+                return '<i class="fa-solid fa-circle-xmark" style="color: #c20000; font-size: 32px;"></i>'
+            }
+        }},
         {"data":"IDSERVICIO","render":function(data){
-            return '<p><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalModificacion" onClick="editarServicio('+data+')"><i class="fa-solid fa-pen-to-square"></i></button>&nbsp;<button class="btn btn-danger" onClick="alertaPrueba2('+data+')"><i class="fa-solid fa-trash-can"></i></button></p>'
+            return '<p><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalModificacion" onClick="modalEditarServicio('+data+')"><i class="fa-solid fa-pen-to-square"></i></button>&nbsp;<button class="btn btn-danger" onClick="modalDesactivarServicio('+data+')"data-bs-toggle="modal" data-bs-target="#modalDesactivacion"><i class="fa-solid fa-trash-can"></i></button></p>'
         }}
     ],
     columnDefs: [
