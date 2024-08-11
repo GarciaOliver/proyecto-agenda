@@ -1,16 +1,22 @@
-//Funciones de la ventana emergente-------------------------------------------------------------------------
-const modal =document.getElementById('modalEditar');
+//Funciones de la ventana emergente CREACIÓN SERVICIO-------------------------------------------------------------------------
 
-function editarServicio(){
-    modal.showModal();
+function recargar(){
+	
+	
 }
 
-function cerrarModal(){
-    modal.close();
-}
+//Funciones de la ventana emergente EDITAR SERVICIO-------------------------------------------------------------------------
 
-function alertaPrueba2(){
-    alert("prueba --2--");
+function editarServicio(numServicio){
+    $.ajax({
+		type:"POST",
+        data:{id:numServicio},
+		url:"../controlador/mostrarServicio.php",
+		success: function(datos) {
+
+			$('#cliente').html(datos);
+		}
+	});
 }
 
 //Configuración del Datatable---------------------------------------------------------------------------------
@@ -50,26 +56,22 @@ let dataTableOpciones={
     },
     ajax:"../controlador/verServiciosTodosControlador.php",
     columns:[
-        {"data":"IDSERVICIO"},
         {"data":"PROPIETARIO"},
         {"data":"CIUDAD"},
         {"data":"CALLEPRINCIPAL"},
         {"data":"CALLESECUNDARIA"},
         {"data":"REFERENCIA"},
         {"data":"TIPOSERVICIO"},
-        {"data":"ESTADO"}
+        {"data":"ESTADO"},
+        {"data":"IDSERVICIO","render":function(data){
+            return '<p><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalModificacion" onClick="editarServicio('+data+')"><i class="fa-solid fa-pen-to-square"></i></button>&nbsp;<button class="btn btn-danger" onClick="alertaPrueba2('+data+')"><i class="fa-solid fa-trash-can"></i></button></p>'
+        }}
     ],
     columnDefs: [
-        {orderable: false, target: [2]},
-        {searchable: false, target: [6,7,8]},
-        /*{width: "5%", target: [0,1,6]},
-        {width: "10%", target: [5]},
-        {width: "30%", target: [4]},*/
-        {
-            data: null,
-            defaultContent: '<p><button class="btn btn-primary" onClick="editarServicio()"><i class="fa-solid fa-pen-to-square"></i></button>&nbsp;<button class="btn btn-danger" onClick="alertaPrueba2()"><i class="fa-solid fa-trash-can"></i></button></p>',
-            targets: [8]
-        }
+        {orderable: false, target: [4,6,7]},
+        {searchable: false, target: [5,6,7]},
+        {width: "5%", target: [0,5]},
+        {width: "20%", target: [2,3,4]},
     ]
 };
 
@@ -78,3 +80,4 @@ $(document).ready(function(){
     $('#tablaServicios').DataTable(dataTableOpciones);
     $('#tabla').show();
 });
+

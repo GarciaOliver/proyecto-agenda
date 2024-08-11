@@ -57,5 +57,19 @@ class servicio{
 			return null;
 		}
     }
+
+    public function mostrarServicioId($id){
+        $consulta="call sp_mostrarServicioId('$id');";
+        $resultado = ejecutarConsultaSP($consulta);
+        if ($resultado->num_rows > 0) {
+			$datos = [];
+			while ($fila = $resultado->fetch_assoc()) {
+				$datos[] = $fila;
+			}
+			return $datos;
+		} else {
+			return null;
+		}
+    }
 }
 ?>
