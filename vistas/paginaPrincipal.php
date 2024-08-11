@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['cedula'])) {
-    header('Location: ../controlador/login.php'); // Redirige a la página de inicio de sesión si no hay sesión activa
+    header('Location: ../vistas/inicioSesion.php'); // Redirige a la página de inicio de sesión si no hay sesión activa
     exit();
 }
 
