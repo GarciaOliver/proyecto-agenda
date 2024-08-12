@@ -376,3 +376,42 @@ END //
 DELIMITER ;
 
 -- ------------------------------------------------------------------------------------------------------------------
+-- Mostrar todos los datos de una orden
+DELIMITER $$
+
+CREATE PROCEDURE sp_verDetallesOrden(IN p_IDORDEN INT)
+BEGIN
+    SELECT 
+        c.NOMBRE AS NOMBRE_CLIENTE,
+        s.CIUDAD,
+        s.CALLEPRINCIPAL,
+        s.CALLESECUNDARIA,
+        s.REFERENCIA,
+        s.TIPOSERVICIO,
+        s.ESTADO AS ESTADO_SERVICIO,
+        sp.NOMBRE AS NOMBRE_SOPORTE,
+        sol.TIPODANO,
+        sol.HORARIOATENCION,
+        sol.DETALLE AS DETALLE_SOLICITUD,
+        o.RELEVANCIA,
+        o.FECHAEMISION AS FECHA_EMISION_ORDEN,
+        o.FECHAELABORACION AS FECHA_ELABORACION_ORDEN,
+        o.FECHAFIN AS FECHA_FIN_ORDEN,
+        o.ESTADO AS ESTADO_ORDEN,
+        o.OBSERVACIONSOPORTE
+    FROM 
+        ORDEN o
+    INNER JOIN 
+        SOLICITUD sol ON o.IDSOLICITUD = sol.IDSOLICITUD
+    INNER JOIN 
+        SERVICIO s ON sol.IDSERVICIO = s.IDSERVICIO
+    INNER JOIN 
+        CLIENTE c ON s.IDCLIENTE = c.CEDULA
+    LEFT JOIN 
+        SOPORTE sp ON sol.IDSOPORTE = sp.CEDULA
+    WHERE 
+        o.IDORDEN = p_IDORDEN;
+END$$
+
+DELIMITER ;
+-- -------------------------------------------------------------------------------------------------------------
