@@ -4,7 +4,7 @@ $(document).ready(function(){
 
 });
 
-function cerarModal(){
+function cerrarModal(){
     $('#cambio').hide();
 }
 

@@ -21,12 +21,13 @@
 <body>
     <h1>Calendario de Órdenes</h1>
     <div style="max-width: 1000px; margin: auto;" id='calendar'></div>
-    <script src="../js/calendarioOrdenes.js"></script>
+    
 
     <!-- Modal -->
     <div class="container" id="cambio" style="max-width: 1000px; margin: auto;">
         
     </div>
 </body>
+<script src="../js/calendarioOrdenes.js"></script>
 
 </html>
